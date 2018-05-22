@@ -14,6 +14,7 @@ https://bitsbox.com/run.html?99cq4  NE Just Soccer App by Lily
 
 Bitsbox Blog Posts
 
+https://bitsbox.com/blog/lets-app-booklet-code-translations/
 https://bitsbox.com/blog/ten-plus-new-features-that-make-the-bitsbox-text-command-more-awesome/
 
 
