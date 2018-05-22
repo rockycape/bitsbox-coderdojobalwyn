@@ -4,6 +4,8 @@ Code for https://bitsbox.com. This is an answer to the question, "Is it possible
 
 Playable Links
 
+https://bitsbox.com/run.html?z678w  Hello World App - by Rockycape
+
 https://bitsbox.com/run.html?ves3d  Noughts and Crosses App - by Max
 
 https://bitsbox.com/run.html?isap2  Frogger App - by Bitsbox Team
