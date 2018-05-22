@@ -10,7 +10,7 @@ https://bitsbox.com/run.html?isap2  Frogger App - by Bitsbox Team
 
 https://bitsbox.com/run.html?99cq4  NE Just Soccer App - by Lily 
 
-https://bitsbox.com/run.html?5q1t3 Sentiment App - by rockycape
+https://bitsbox.com/run.html?5q1t3 Sentiment App - by Rockycape
 
 Bitsbox Blog Posts
 
