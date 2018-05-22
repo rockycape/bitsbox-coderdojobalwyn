@@ -4,4 +4,10 @@ Code for https://bitsbox.com. This is an answer to the question, "Is it possible
 
 Playable Links
 
-Tic-Tac-Toe App - simple tic-tac-toe board  https://bitsbox.com/run.html?ves3d
+Tic-Tac-Toe App - simple tic-tac-toe board - by Max  https://bitsbox.com/run.html?ves3d   
+Frogger by Bitsbox Team https://bitsbox.com/run.html?isap2
+NE Just Soccer by Lily https://bitsbox.com/run.html?99cq4
+
+Other github (bitsbox) repositories
+
+https://github.com/farmerchris/bitsbox-max
