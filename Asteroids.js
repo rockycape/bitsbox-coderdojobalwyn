@@ -31,10 +31,12 @@ function autoShoot() {
 autoShoot()
 
 function drag(x, y) {
-  // Use astronaut movement logic
+  // Use astronaut movement logic, but apply thrust as velocity
   spot = x - 384
   thrust = (750 - y) / 100 * speed
-  rocket.move(rocket.angle, thrust)
+  rad = rocket.angle * Math.PI / 180
+  rocket.vx += thrust * Math.sin(rad)
+  rocket.vy += -thrust * Math.cos(rad)
   rocket.rotate(spot / 2)
 }
 
@@ -112,3 +114,6 @@ function startGame() {
   loop = animate
 }
 delay(startGame, 2000)
+
+// Ensure drag controls work
+ondrag = drag
