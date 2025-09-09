@@ -1,4 +1,3 @@
-
 points = 0
 size = 225
 speed = 10
@@ -12,15 +11,15 @@ message = text('Ready?', 330, 650, 40, 'black')
 // --- Controls ---
 function shoot() {
   sound('laser')
-  // Use antenna4 as bullet, fire from rocket's nose
+  // Use a bright, large sprite for the laser blast
   var offset = 50
   var rad = rocket.angle * Math.PI / 180
   var sx = rocket.x + offset * Math.sin(rad)
   var sy = rocket.y - offset * Math.cos(rad)
-  shot = stamp('antenna4', sx, sy, 40)
-  // Move bullet in direction rocket is facing
+  shot = stamp('pixel sword', sx, sy, 80, 'red')
+  // Move bullet in direction rocket is facing, faster and longer
   var moveDir = rocket.angle
-  shot.move(moveDir, 1500, 2000)
+  shot.move(moveDir, 25, 30)
 }
 
 // Automatic shooting every half second
@@ -90,7 +89,7 @@ function animate() {
   wrap(rocket)
 
   // Lasers
-  find('laser').forEach(function(l) {
+  find('pixel sword').forEach(function(l) {
     l.x += l.vx
     l.y += l.vy
     wrap(l)
