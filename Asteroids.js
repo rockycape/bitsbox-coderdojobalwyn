@@ -34,7 +34,7 @@ function drag(x, y) {
   // Use astronaut movement logic
   spot = x - 384
   thrust = (750 - y) / 100 * speed
-  rocket.move('up', thrust)
+  rocket.move(rocket.angle, thrust)
   rocket.rotate(spot / 2)
 }
 
