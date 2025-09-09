@@ -1,6 +1,6 @@
 fill('stars2')
 points = 0
-rocket = stamp('rocket', 384, 512)   // center of 768x1024
+rocket = stamp('rocket', 180)   // --- size of rocket is 180
 rocket.scale = 0.5
 rocket.vx = 0
 rocket.vy = 0
