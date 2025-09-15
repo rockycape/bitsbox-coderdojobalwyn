@@ -1,9 +1,11 @@
+fill('pixel sky')
 points = 0
-size = 225
-speed = 10
-rocket = stamp('rocket', size)
+size = 80  // smaller size for better control
+speed = 16
+rocket = stamp('rocket', 384, 512)  // center of screen
 rocket.vx = 0
 rocket.vy = 0
+rocket.scale = 0.5  // make rocket a good size for gameplay
 
 score = text(points, 20, 20, 'white')
 message = text('Ready?', 330, 650, 40, 'black')
@@ -30,13 +32,10 @@ function autoShoot() {
 autoShoot()
 
 function drag(x, y) {
-  // Use astronaut movement logic, but apply thrust as velocity
-  spot = x - 384
-  thrust = (750 - y) / 100 * speed
-  rad = rocket.angle * Math.PI / 180
-  rocket.vx += thrust * Math.sin(rad)
-  rocket.vy += -thrust * Math.cos(rad)
-  rocket.rotate(spot / 2)
+  rocket.aim(x, y)  // Point rocket toward drag point
+  thrust = 5
+  rocket.vx += thrust * Math.sin(rocket.angle * Math.PI/180)
+  rocket.vy += -thrust * Math.cos(rocket.angle * Math.PI/180)
 }
 
 // --- Asteroids ---
