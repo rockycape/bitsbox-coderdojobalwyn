@@ -10,7 +10,7 @@ hero.vy = 0
 score = text(points, 20, 20, 'white')
 message = text('Ready?', 280, 500, 40, 'white')
 
-// 🎯 Manual fire using trigonometry
+// 🎯 Manual fire using trigonometry + timed disappearance
 function tap() {
   sound('laser')
   shot = stamp('pixel sword', hero.x, hero.y)
@@ -21,13 +21,20 @@ function tap() {
 
   shot.vx = dx
   shot.vy = dy
+  
+  shot.rotate(hero.rotation) // 🔄 Rotate laser graphic to match rocket
+
+  // 💨 Hide the shot after 1 second
+  delay(function() {
+    shot.hide()
+  }, 10000)
 }
 
 // 🧭 Mouse-based movement
 function touching() {
   hero.aim(x, y)
 
-  thrust = 0.3
+  thrust = 0.00
   hero.vx += thrust * Math.sin(hero.rotation * Math.PI / 180)
   hero.vy += -thrust * Math.cos(hero.rotation * Math.PI / 180)
 }
