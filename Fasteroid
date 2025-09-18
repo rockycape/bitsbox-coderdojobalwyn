@@ -1,0 +1,131 @@
+fill('stars2')
+points = 0
+
+// 🚀 Rocket setup
+hero = stamp('rocket', 180)
+hero.scale = 0.5
+hero.vx = 0
+hero.vy = 0
+
+score = text(points, 20, 20, 'white')
+message = text('Ready?', 280, 500, 40, 'white')
+
+// 🎯 Manual fire using trigonometry + timed disappearance
+function tap() {
+  sound('laser')
+  shot = stamp('pixel sword', hero.x, hero.y)
+  shot.angle = hero.rotation
+
+  dx = 10 * Math.sin(hero.rotation * Math.PI / 180)
+  dy = -10 * Math.cos(hero.rotation * Math.PI / 180)
+
+  shot.vx = dx
+  shot.vy = dy
+  
+  shot.rotate(hero.rotation) // 🔄 Rotate laser graphic to match rocket
+
+  // 💨 Hide the shot after 1 second
+  delay(function() {
+    shot.hide()
+  }, 10000)
+}
+
+// 🧭 Mouse-based movement
+function touching() {
+  hero.aim(x, y)
+
+  thrust = 0.05
+  hero.vx += thrust * Math.sin(hero.rotation * Math.PI / 180)
+  hero.vy += -thrust * Math.cos(hero.rotation * Math.PI / 180)
+}
+
+// 🪨 Asteroid spawning
+function spawnAsteroid() {
+  x = random(0, 768)
+  y = random(0, 200)
+  asteroid = stamp('asteroid', x, y)
+  asteroid.size = 3
+  asteroid.vx = random(-2, 2)
+  asteroid.vy = random(-2, 2)
+}
+
+// 💥 Asteroid splitting
+function breakAsteroid(asteroid) {
+  size = asteroid.size
+  asteroid.hide()
+  if (size > 1) {
+    repeat(function() {
+      piece = stamp('asteroid', asteroid.x, asteroid.y)
+      piece.size = size - 1
+      piece.vx = random(-3, 3)
+      piece.vy = random(-3, 3)
+    }, 2)
+  }
+}
+
+// 🎯 Shot collision
+function checkShot(shot) {
+  strikes = shot.hits('asteroid')
+  if (strikes.length > 0) {
+    sound('hit')
+    shot.hide()
+    breakAsteroid(strikes[0])
+    points = points + 100
+    score.change(points)
+  }
+}
+
+// 🌍 Screen wrap
+function wrap(obj) {
+  if (obj.x > 768) obj.x = 0
+  if (obj.x < 0) obj.x = 768
+  if (obj.y > 1024) obj.y = 0
+  if (obj.y < 0) obj.y = 1024
+}
+
+// 🔄 Game loop
+function animate() {
+  touching()
+
+  hero.x += hero.vx
+  hero.y += hero.vy
+  wrap(hero)
+
+  find('pixel sword').forEach(function(shot) {
+    shot.x += shot.vx || 0
+    shot.y += shot.vy || 0
+    wrap(shot)
+    checkShot(shot)
+  })
+
+  find('asteroid').forEach(function(a) {
+    a.x += a.vx
+    a.y += a.vy
+    wrap(a)
+  })
+
+  if (hero.hits('asteroid')) {
+    hero.explode()
+    message.change('Game Over')
+    loop = null
+  }
+}
+
+// 🕹️ Start game
+function startGame() {
+  message.change('')
+  repeat(spawnAsteroid, 5)
+  loop = animate
+}
+delay(startGame, 2000)
+
+
+
+
+
+
+
+
+
+
+
