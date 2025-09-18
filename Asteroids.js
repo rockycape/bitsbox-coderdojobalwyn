@@ -1,44 +1,38 @@
-fill('pixel sky')
+fill('stars2')
 points = 0
-size = 80  // smaller size for better control
-speed = 16
-rocket = stamp('rocket', 384, 512)  // center of screen
-rocket.vx = 0
-rocket.vy = 0
-rocket.scale = 0.5  // make rocket a good size for gameplay
+
+// 🚀 Rocket setup
+hero = stamp('rocket', 180)
+hero.scale = 0.5
+hero.vx = 0
+hero.vy = 0
 
 score = text(points, 20, 20, 'white')
-message = text('Ready?', 330, 650, 40, 'black')
+message = text('Ready?', 280, 500, 40, 'white')
 
-// --- Controls ---
-function shoot() {
+// 🎯 Manual fire using trigonometry
+function tap() {
   sound('laser')
-  // Use a bright, large sprite for the laser blast
-  var offset = 50
-  var rad = rocket.angle * Math.PI / 180
-  var sx = rocket.x + offset * Math.sin(rad)
-  var sy = rocket.y - offset * Math.cos(rad)
-  shot = stamp('pixel sword', sx, sy, 80, 'red')
-  // Move bullet in direction rocket is facing, faster and longer
-  var moveDir = rocket.angle
-  shot.move(moveDir, 25, 30)
+  shot = stamp('pixel sword', hero.x, hero.y)
+  shot.angle = hero.rotation
+
+  dx = 10 * Math.sin(hero.rotation * Math.PI / 180)
+  dy = -10 * Math.cos(hero.rotation * Math.PI / 180)
+
+  shot.vx = dx
+  shot.vy = dy
 }
 
-// Automatic shooting every half second
-function autoShoot() {
-  shoot()
-  delay(autoShoot, 2000)
-}
-autoShoot()
+// 🧭 Mouse-based movement
+function touching() {
+  hero.aim(x, y)
 
-function drag(x, y) {
-  rocket.aim(x, y)  // Point rocket toward drag point
-  thrust = 5
-  rocket.vx += thrust * Math.sin(rocket.angle * Math.PI/180)
-  rocket.vy += -thrust * Math.cos(rocket.angle * Math.PI/180)
+  thrust = 0.3
+  hero.vx += thrust * Math.sin(hero.rotation * Math.PI / 180)
+  hero.vy += -thrust * Math.cos(hero.rotation * Math.PI / 180)
 }
 
-// --- Asteroids ---
+// 🪨 Asteroid spawning
 function spawnAsteroid() {
   x = random(0, 768)
   y = random(0, 200)
@@ -48,6 +42,7 @@ function spawnAsteroid() {
   asteroid.vy = random(-2, 2)
 }
 
+// 💥 Asteroid splitting
 function breakAsteroid(asteroid) {
   size = asteroid.size
   asteroid.hide()
@@ -61,7 +56,7 @@ function breakAsteroid(asteroid) {
   }
 }
 
-// --- Collisions ---
+// 🎯 Shot collision
 function checkShot(shot) {
   strikes = shot.hits('asteroid')
   if (strikes.length > 0) {
@@ -73,6 +68,7 @@ function checkShot(shot) {
   }
 }
 
+// 🌍 Screen wrap
 function wrap(obj) {
   if (obj.x > 768) obj.x = 0
   if (obj.x < 0) obj.x = 768
@@ -80,32 +76,35 @@ function wrap(obj) {
   if (obj.y < 0) obj.y = 1024
 }
 
-// --- Animate ---
+// 🔄 Game loop
 function animate() {
-  // Move rocket with inertia
-  rocket.x += rocket.vx
-  rocket.y += rocket.vy
-  wrap(rocket)
+  touching()
 
-  // Lasers
-  find('pixel sword').forEach(function(l) {
-    l.x += l.vx
-    l.y += l.vy
-    wrap(l)
-    checkShot(l)
+  hero.x += hero.vx
+  hero.y += hero.vy
+  wrap(hero)
+
+  find('pixel sword').forEach(function(shot) {
+    shot.x += shot.vx || 0
+    shot.y += shot.vy || 0
+    wrap(shot)
+    checkShot(shot)
   })
 
-  // Asteroids
   find('asteroid').forEach(function(a) {
     a.x += a.vx
     a.y += a.vy
     wrap(a)
   })
 
-  // Collision: rocket vs asteroid
-  // Rocket is indestructible: do nothing on collision
+  if (hero.hits('asteroid')) {
+    hero.explode()
+    message.change('Game Over')
+    loop = null
+  }
 }
 
+// 🕹️ Start game
 function startGame() {
   message.change('')
   repeat(spawnAsteroid, 5)
@@ -113,5 +112,10 @@ function startGame() {
 }
 delay(startGame, 2000)
 
-// Ensure drag controls work
-ondrag = drag
+
+
+
+
+
+
+
